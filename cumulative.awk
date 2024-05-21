@@ -1,0 +1,23 @@
+BEGIN{
+    if(col=="")
+	col=1;
+}
+{
+    if(substr($1,1,1)!="#"){
+	if(tolower($(col))!="nan"){
+	    n++;
+	    x[n]=$(col);
+	}
+    }
+}
+END{
+    asort(x)
+    xold=x[n]+1;
+    for(i=1;i<=n;i++){
+	if(x[i]!=xold){
+	    print(x[i],n-i+1)
+	    xold=x[i];
+	}
+    }
+
+}

@@ -1,0 +1,1 @@
+../data/quakes/hauksson_focal/aki2pot.awk
