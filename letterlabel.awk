@@ -1,4 +1,6 @@
 BEGIN{
+    if(makecap=="")
+	makecap=0;
 }
 {
     string="abcdefghijklmnopqrstuvwxyz";
@@ -12,7 +14,7 @@ BEGIN{
     if(n>26){
 	print("error",n) > "/dev/stderr";
     }
-    if(cap)
+    if(cap || makecap)
 	print(toupper(substr(string,n,1)));
     else
 	print(substr(string,n,1));
