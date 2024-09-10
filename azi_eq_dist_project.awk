@@ -65,7 +65,10 @@ BEGIN{
 		sin_ld=sin(ld);
 		
 		c = acos(sin_p1 * sin_p + cos_p1 * cos_p * cos_ld);
-		k = c/sin(c);
+		if(c==0)
+		    k=0;
+		else
+		    k = c/sin(c);
 		
 		x = k * cos_p * sin_ld;
 		y = k * (cos_p1 * sin_p - sin_p1 * cos_p * cos_ld);

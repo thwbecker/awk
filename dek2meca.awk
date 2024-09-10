@@ -13,12 +13,12 @@
 # format selects the output:
 #
 # 0: CMT best double couple 
-# 1: moment tensor 
+# 1: moment tensor with code
 # 2: lon lat z moment[Nm] 
 # 3: e_plunge[1] e_plunge[2] 
 # 4: lon lat z mw year time_sec_since_epoch
+# 5: moment tensor with time_sec_since_epoch
 #
-# $Id: dek2meca.awk,v 1.5 2010/07/06 22:11:31 becker Exp $
 #
 BEGIN{
   ls=1;
@@ -167,6 +167,12 @@ BEGIN{
 # 4: lon lat z mw year time_sec_since_epoch 
 	printf("%8.2f %8.2f %6.1f %5.1f %4i %12i\n",
 	       lonc,latc,depc,mw,year,secs);
+      else if(format==5)
+# (m) Moment tensor
+#	lonc, latc, depth, mrr, mtt, mff, mrt, mrf, mtf, exp, newX, newY, time_sinc_epoch
+	printf("%8.3f %8.3f %8.2f %8.5f %8.5f %8.5f %8.5f %8.5f %8.5f %2i %8.3f %8.3f %12i\n",
+	      lonc,latc,depc,m[1],m[2],m[3],m[4],m[5],m[6],exponent,lonc,latc,
+	       secs);
 
       else {
 	print("error, format",format,"undefined") > "/dev/stderr";

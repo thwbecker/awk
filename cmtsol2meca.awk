@@ -19,7 +19,7 @@ BEGIN{
 	scale = 10**iexp;
 	#X Y depth mrr mtt mff mrt mrf mtf exp [newX newY] [event_title].
 
-	print(lon,lat,depth,mrr/scale,mtt/scale,mpp/scale,mrt/scale,mrp/scale,mtp/scale,iexp,lon,lat);
+	print(lon,lat,depth,mrr/scale,mtt/scale,mpp/scale,mrt/scale,mrp/scale,mtp/scale,iexp,lon,lat,1);
 	mrr=mtt=mpp=mrt=mtp=mtp=0;
     }
 }
