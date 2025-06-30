@@ -43,6 +43,8 @@ BEGIN{
 # scale z axis
   if(zfac == 0)
     zfac = hfac;
+  if(zlim=="")
+      zlim = -1e20;
   if(omode==0)
 # select output mode ( 1: COFF files 2: xyz points)
       omode=1;
@@ -269,10 +271,20 @@ function write_xyz_file()
 function write_exyz_file()
 {
   for(i=1;i<=nrel;i++){
-    for(j=1;j<=nc[i];j++){
-      node = ele[i*maxnrv+j] + 1;
-      printf("%20.8e %20.8e %20.8e\n",x[node],y[node],z[node]);
-    }
-    printf(">\n");
+      hit = 0;
+      zmean = 0;
+      for(j=1;j<=nc[i];j++){
+	  node = ele[i*maxnrv+j] + 1;
+	  zmean += z[node];
+      }
+      zmean /= nc[i];
+      if(zmean > zlim){
+	  printf("> -Z%g\n",zmean);
+	  for(j=1;j<=nc[i];j++){
+	      node = ele[i*maxnrv+j] + 1;
+	      printf("%20.8e %20.8e %20.8e\n",x[node],y[node],z[node]);
+	  }
+
+      }
   }
 }

@@ -26,29 +26,33 @@ BEGIN{
 }
 {
   if((substr($1,1,1)!="#")&&(NF>=3)){
-    s11=$1;
-    s12=$2;
-    s22=$3;
-    x1 = (s11 + s22)/2.0;
-    x2 = (s11 - s22)/2.0;
-    r = x2 * x2 + s12 * s12;
-    if(r > 0.0){
-      r = sqrt(r);
-      fms = x1 + r;
-      sms = x1 - r;
-    }else{
-      fms = sms = x1;
-    }
+      if((tolower($1)!="nan")&&(tolower($2)!="nan")&&(tolower($3)!="nan")){
+	  s11=$1;
+	  s12=$2;
+	  s22=$3;
+	  x1 = (s11 + s22)/2.0;
+	  x2 = (s11 - s22)/2.0;
+	  r = x2 * x2 + s12 * s12;
+	  if(r > 0.0){
+	      r = sqrt(r);
+	      fms = x1 + r;
+	      sms = x1 - r;
+	  }else{
+	      fms = sms = x1;
+	  }
 # first method
-    if(x2 != 0.0)
-      deg = fac * atan2(s12,x2);
-    else if(s12 <= 0.0)
-      deg= -45.0;
-    else
-      deg=  45.0;
-    azi = 90.0 - deg;
+	  if(x2 != 0.0)
+	      deg = fac * atan2(s12,x2);
+	  else if(s12 <= 0.0)
+	      deg= -45.0;
+	  else
+	      deg=  45.0;
+	  azi = 90.0 - deg;
 
-    printf("%g %g %g ",fms,sms,azi); 
+	  printf("%g %g %g ",fms,sms,azi);
+      }else{
+	  printf("NaN NaN NaN ");
+      }
     for(i=4;i<=NF;i++)
       printf("%s ",$i);
     printf("\n");

@@ -3,11 +3,12 @@
 #
 #     input format 
 #
-#     lon, lat, depth, strike, dip, rake, mag
+#     lon, lat, depth, strike, dip, rake, mag [additional fields]
 #
 BEGIN{
   f = 57.2957795130823;
   log10_fac=0.4342944819032518;
+  cmt_style=1;
 }
 {
   if((substr($1,1)!="#")&&(NF>=7)){

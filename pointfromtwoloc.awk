@@ -3,7 +3,7 @@
 # great circle
 #
 # input:
-# lon1 lat1 lon2 lat2 frac
+# lon1 lat1 lon2 lat2 frac [other_stuff]
 #
 
 BEGIN{
