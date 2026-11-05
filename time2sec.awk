@@ -7,10 +7,14 @@
 #
 # mode 2:
 # convert a time format of 2009.11.22.07:28:00.HHZ.SAC to UNIX seconds
-
+#
+# DEFAULT IS UTC
+#
 BEGIN{
     if(mode=="")
 	mode = 1;
+    if(utc=="")
+	utc = 1;
 }
 {
     if(substr($1,1,1)!=""){
@@ -36,7 +40,7 @@ BEGIN{
 
 		#printf("%i/%i/%i %i:%i:%i\n",datea[1],datea[2],datea[3],timea[1],timea[2],timea[3]) > "/dev/stderr"
 		datespec=sprintf("%04i %02i %02i %02i %02i %02f.0",datea[1],datea[2],datea[3],timea[1],timea[2],timea[3]);
-		time_stamp = mktime(datespec); # time in seconds since epoch
+		time_stamp = mktime(datespec,utc); # time in seconds since epoch
 		printf("%i ",time_stamp);
 		for(i=3;i<=NF;i++)
 		    printf("%s ",$i);
@@ -53,7 +57,7 @@ BEGIN{
 
 		#printf("%i/%i/%i %i:%i:%i\n",year,month,day,timea[1],timea[2],timea[3]) > "/dev/stderr"
 		datespec=sprintf("%04i %02i %02i %02i %02i %02i",year,month,day,timea[1],timea[2],timea[3]);
-		time_stamp = mktime(datespec); # time in seconds since epoch
+		time_stamp = mktime(datespec,utc); # time in seconds since epoch
 		printf("%i ",time_stamp);
 		for(i=3;i<=NF;i++)
 		    printf("%s ",$i);

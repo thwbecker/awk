@@ -4,6 +4,8 @@
 
 BEGIN{
   i=1;
+  if(utc=="")
+      utc = 1;
 }
 {
 if((substr($1,1,1)!="#"))
@@ -15,7 +17,7 @@ if((substr($1,1,1)!="#"))
   the_time=sprintf("%i %i %i %i %i %i",
 		   year,month,day,
 		   hour,minute,second);
-  sec_unix = mktime(the_time);
+  sec_unix = mktime(the_time,utc);
 
   print(NR-i,sec_unix);
 }

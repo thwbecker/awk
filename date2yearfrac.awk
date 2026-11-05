@@ -15,8 +15,8 @@ BEGIN{
 	tsec = mktime(the_time,utc);
 	
 	year = strftime("%Y",tsec);
-	first_sec = mktime(sprintf("%04i %02i %02i %02i %02i %02i",year,1,1,0,0,0),1);
-	last_sec  = mktime(sprintf("%04i %02i %02i %02i %02i %02i",year,12,31,23,59,59),1);
+	first_sec = mktime(sprintf("%04i %02i %02i %02i %02i %02i",year,1,1,0,0,0),utc);
+	last_sec  = mktime(sprintf("%04i %02i %02i %02i %02i %02i",year,12,31,23,59,59),utc);
 	tyear = year + (tsec-first_sec)/(last_sec-first_sec);
 	printf("%13.8f ",tyear)
 	for(i=7;i<=NF;i++)

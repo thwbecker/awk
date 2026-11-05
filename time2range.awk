@@ -11,11 +11,12 @@
 # date and time
 #
 BEGIN{
-
+    if(utc=="")
+	utc = 1;
 }
 {
     datespec=sprintf("%04i %02i %02i %02i %02i 00",$1,$2,$3,$4,$5);
-    time_stamp0 = mktime(datespec); # time in seconds since epoch
+    time_stamp0 = mktime(datespec,utc);
     time_stamp1 = time_stamp0 + $6*60;
     time_stamp2 = time_stamp0 + $7*60;
 

@@ -20,7 +20,7 @@ BEGIN{
 	
 #convert time to years after 1970.
   time=sprintf("%4i %2i %2i %2i %2i %2i",year,month,day,hour,min,sec);
-  tsec=sprintf("%.12e",(mktime(time)-28800)/31557600);    #NOTE: correct from UTC, convert to proportion of a 365.25 day year.
+  tsec=sprintf("%.12e",(mktime(time,1)-28800)/31557600);    #NOTE: correct from UTC, convert to proportion of a 365.25 day year.
 
 #get location info., reformat
   lon=substr($0,29,4);
