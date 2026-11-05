@@ -3,7 +3,6 @@
 # fast (and inaccurate) if fast is set to unity, default is slow
 # if col is not set, uses col=1
 #
-# $Id: standarddev.awk,v 1.5 2012/06/23 22:20:39 becker Exp becker $
 BEGIN {
     sum = sum2 = 0.0;n = i = 0;	# initialize summations
     if(col=="")			# default is to use first column

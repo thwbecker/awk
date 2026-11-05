@@ -58,7 +58,7 @@ function distance(lon1,lat1,lon2,lat2,robust)
 	tmp2 *= tmp2;
 	
 	tmp3 = sin_phi1*sin_phi2 + cos_phi1*cos_phi2*cos_dlambda;
-
+	
 	return atan2(sqrt(tmp1+tmp2),tmp3);
     }else{
 	# but tihs one is OK up to 1e-14
@@ -72,6 +72,8 @@ function distance(lon1,lat1,lon2,lat2,robust)
 	tmp2 *= cos(tmplat2);
 	
 	tmp3=sqrt(tmp1+tmp2);
+	if(tmp3>1)
+	    tmp3 = 1;
 	return 2.0*asin(tmp3);
     }
 }

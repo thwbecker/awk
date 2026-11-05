@@ -35,9 +35,9 @@ function azimuth (lon1, lat1,lon2,lat2) {
 
   slat[1]=sin(lat1);clat[1]=cos(lat1);
   slat[2]=sin(lat2);clat[2]=cos(lat2);
-  
-  tmp_azi = atan2(sin(lon2-lon1)*clat[2],
-		  clat[1]*slat[2]-slat[1]*clat[2]*cos(lon1-lon2));
+  dlon = lon2-lon1;
+  tmp_azi = atan2(sin(dlon)*clat[2],
+		  clat[1]*slat[2]-slat[1]*clat[2]*cos(dlon));
   if(tmp_azi < 0)
     tmp_azi += twopi;
 

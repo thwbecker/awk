@@ -18,6 +18,7 @@
 # 3: e_plunge[1] e_plunge[2] 
 # 4: lon lat z mw year time_sec_since_epoch
 # 5: moment tensor with time_sec_since_epoch
+# 6: my Aki format for best double couple with timestamp
 #
 #
 BEGIN{
@@ -39,7 +40,7 @@ BEGIN{
     hour=tstring[1];minute=tstring[2];second=tstring[3];
 # convert to seconds since epoch
     the_time=sprintf("%i %i %i %i %i %i",year,month,day,hour,minute,second);
-    secs = mktime(the_time);
+    secs = mktime(the_time,1);
 
     lat=sprintf("%lf",substr($0,30,6));
     lon=sprintf("%lf",substr($0,37,7));
@@ -173,8 +174,10 @@ BEGIN{
 	printf("%8.3f %8.3f %8.2f %8.5f %8.5f %8.5f %8.5f %8.5f %8.5f %2i %8.3f %8.3f %12i\n",
 	      lonc,latc,depc,m[1],m[2],m[3],m[4],m[5],m[6],exponent,lonc,latc,
 	       secs);
-
-      else {
+      else if(format==6){	# my Aki format
+# print(lon,lat,dep,str[1],dip[1],rake[1],mag,lon,lat,tsec);
+	  print(lonc,latc,depc,strike[1],dip[1], rake[1], mw, lonc, latc,secs);
+      }else {
 	print("error, format",format,"undefined") > "/dev/stderr";
 	nextfile;
       }

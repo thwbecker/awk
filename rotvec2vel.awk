@@ -41,6 +41,7 @@ BEGIN{
       lat=$2;
       phi=lon*f;
       lambda=lat*f;
+
       theta = pihalf - lambda;
 # coordinates of point in x y z frame with unit length
 # readius (velocity factor fvel has the R included)

@@ -1,13 +1,14 @@
 #
 # gawk script to read new Global (Harvard) CMT moment tensor solutions
-# in the new "ndk" format
+# in the "new" ndk format
 #
-# set parmaters like 
+# USAGE: set parameters like 
 #
-#     gawk --assign select=0 --assign format=0 ndk2meca.awk jan76_dec05.ndk
+#     gawk -v select=0 -v format=0 ndk2meca.awk jan76_dec05.ndk > tmp.out
 #
+# SELECTION:
 #
-# if select flag is set to
+# if *select* flag is set to
 #
 # 0: (default) will print all events
 #
@@ -16,22 +17,48 @@
 # 3: will select normal mechanism only
 # 4: select eventid `event'
 #
+# if *tmin* is set to YYYY/mm
+# will print events after YYYY/mm
 #
-# format selects the output:
+#
+# FORMATTING:
+#
+# *format* variable selects the output:
 #
 # 0: CMT best double couple in psmeca -Sc format (default) 
 # 1: moment tensor          in psmeca -Sm
 # 2: lon lat z moment[Nm]  date time 
 # 3: e_plunge[1] e_plunge[2] 
 # 4: lon lat z mw year time_sec_since_epoch
-# 5:  moment tensor          in psmeca -Sm with time since epoch instead of event ID
-# 6: date         time       elat    elon   edep  Mag
-# 7:  moment tensor          in psmeca -Sm with Mw-date-time instead of event ID
-# $Id: ndk2meca.awk,v 1.4 2010/07/06 22:06:57 becker Exp becker $
+# 5: moment tensor          in psmeca -Sm with time since epoch instead of event ID
+# 6: date         time      elat    elon   edep  Mag
+# 7: moment tensor          in psmeca -Sm with Mw-date-time instead of event ID
+# 8: my AKI format
+#
+# Thorsten Becker, thwbecker@post.harvard.edu, 11/2025
 #
 BEGIN{
   ls=1;
   lc=0;
+  if(format=="")
+      format = 0;
+  if(select=="")
+      select = 0;
+  if(tmin==""){
+      tmin_year  = 1900;
+      tmin_month = 01;
+  }else{
+      nt = split(tmin, a , "/");
+      if(nt!=2){
+	  printf("tmin not formatted right, %s, should be yy/mm\n",tmin) > "/dev/stderr";
+	  exit;
+      }
+      tmin_year  = a[1];
+      tmin_month = a[2];
+      printf("printing events after %i/%i\n",
+	    tmin_year,tmin_month) > "/dev/stderr";
+  }
+      
 }
 {
   if(($1!="") && (substr($1,1,1)!="#")){
@@ -58,13 +85,13 @@ BEGIN{
 
       date=substr($0,6,10);split(date,dstring,"/");
       month=dstring[2];day=dstring[3];year=dstring[1];
-
+     
       time=substr($0,17,10);split(time,tstring,":");
       hour=tstring[1];minute=tstring[2];second=tstring[3];
 
       # convert to seconds since epoch
       the_time=sprintf("%i %i %i %i %i %i",year,month,day,hour,minute,int(second+0.5));
-      secs = mktime(the_time);
+      secs = mktime(the_time,1);
 
 
       lat=sprintf("%lf",substr($0,28,6));
@@ -229,6 +256,15 @@ BEGIN{
       }else{
 	use=1;
       }
+      #
+      # check on times
+      #
+
+      if(year < tmin_year)
+	  use = 0;
+      else if(month<tmin_month)
+	  use = 0;
+      #print(month,year,tmin_month,tmin_year,use);
       if(use){
 	if(format==0){
 	  #
@@ -294,6 +330,13 @@ BEGIN{
 	    printf("%8.3f %8.3f %8.2f %8.5f %8.5f %8.5f %8.5f %8.5f %8.5f %2i %8.3f %8.3f %.1f-%s-%s-%s-%s-%s\n",\
 		   lonc,latc,depc,m[1],m[2],m[3],m[4],m[5],m[6],exponent,lonc,latc,
 		   mw,year,month,day,hour,minute);
+	}else if(format==8){
+	  #
+	  # use my AKI
+	  #
+	  #
+          # print(lon,lat,dep,str[1],dip[1],rake[1],mag,lon,lat,tsec);
+	  print(lonc,latc,depc,strike[1],dip[1], rake[1], mw, lonc, latc,secs);
 	}else {
 	  print("error, format",format,"undefined") > "/dev/stderr";
 	  nextfile;
